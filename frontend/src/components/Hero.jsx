@@ -1,8 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Hero() {
   return (
     <section className="flex flex-col items-center justify-center text-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 px-6">
+      
       {/* Logo or small heading */}
       <div className="mb-6 text-indigo-600 font-semibold tracking-wide uppercase">
         OneCampus
@@ -22,24 +24,24 @@ export default function Hero() {
 
       {/* CTA buttons */}
       <div className="flex flex-col sm:flex-row gap-4">
-        <a
-          href="#explore"
+        <Link
+          to="/clubs" // Routes to Clubs page
           className="px-8 py-3 rounded-full bg-indigo-600 text-white text-lg font-medium hover:bg-indigo-700 transition duration-300 shadow-md"
         >
           Explore
-        </a>
-        <a
-          href="#join"
+        </Link>
+        <Link
+          to="/login" // Routes to Login page
           className="px-8 py-3 rounded-full bg-white border border-indigo-600 text-indigo-600 text-lg font-medium hover:bg-indigo-50 transition duration-300"
         >
           Join Now
-        </a>
+        </Link>
       </div>
 
       {/* Decorative background or illustration */}
       <div className="mt-16">
         <img
-          src="https://illustrations.popsy.co/gray/student-studying.svg"
+          src="/student-studying.svg"  // Place this in frontend/public/
           alt="Campus life illustration"
           className="w-80 md:w-96 mx-auto drop-shadow-xl transition-transform hover:scale-105"
         />

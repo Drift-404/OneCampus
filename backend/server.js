@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import authRoutes from './routes/authRoutes.js';
 import postRoutes from './routes/postRoutes.js';
+import announcementsRoutes from './routes/announcements.js'; // new
 
 dotenv.config();
 const app = express();
@@ -18,13 +19,13 @@ mongoose.connect(MONGO)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB error', err));
 
+// Test route
 app.get('/', (req, res) => res.json({ ok: true }));
+app.get("/api/test", (req, res) => res.json({ message: "Backend is connected!" }));
 
+// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
-
-app.get("/api/test", (req, res) => {
-  res.json({ message: "Backend is connected!" });
-});
+app.use('/api/announcements', announcementsRoutes); // new route for announcements
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
