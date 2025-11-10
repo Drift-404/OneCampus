@@ -7,7 +7,7 @@ export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("USER"); // default role
+  const [role, setRole] = useState("user"); // default role
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -59,8 +59,8 @@ export default function Register() {
           onChange={(e) => setRole(e.target.value)}
           className="border p-2 rounded"
         >
-          <option value="USER">User</option>
-          <option value="ADMIN">Admin</option>
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
         </select>
         <button type="submit" className="bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">
           Register

@@ -1,20 +1,22 @@
-router.post("/register", async (req, res) => {
-  const { name, email, password, role } = req.body;
+import jwt from "jsonwebtoken";
+
+export const authMiddleware = (req, res, next) => {
+  const token = req.header("Authorization");
+  if (!token) return res.status(401).json({ msg: "No token, authorization denied" });
+
   try {
-    console.log("📩 Register request received:", req.body);
-
-    const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ msg: "User already exists" });
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = new User({ name, email, password: hashedPassword, role });
-    await newUser.save();
-
-    const token = jwt.sign({ id: newUser._id, role: newUser.role }, JWT_SECRET, { expiresIn: "1d" });
-    res.json({ token, user: { id: newUser._id, name, email, role } });
+    const decoded = jwt.verify(token, "your_jwt_secret");
+    req.user = decoded;
+    next();
   } catch (err) {
-    console.error("❌ Registration error:", err);
-    res.status(500).json({ msg: "Server error" });
+    res.status(400).json({ msg: "Invalid token" });
   }
-});
+};
+
+// 🔥 Add this new function:
+export const adminOnly = (req, res, next) => {
+  if (req.user.role !== "ADMIN") {
+    return res.status(403).json({ msg: "Access denied: Admins only" });
+  }
+  next();
+};

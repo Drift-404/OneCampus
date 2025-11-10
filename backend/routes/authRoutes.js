@@ -7,6 +7,11 @@ import jwt from "jsonwebtoken";
 const router = express.Router();
 const JWT_SECRET = "your_jwt_secret"; // use .env in production
 
+router.get("/test", (req, res) => {
+  console.log("✅ /api/auth/test hit!");
+  res.json({ msg: "Auth route is working!" });
+});
+
 // REGISTER
 router.post("/register", async (req, res) => {
   const { name, email, password, role } = req.body;
@@ -22,7 +27,8 @@ router.post("/register", async (req, res) => {
     const token = jwt.sign({ id: newUser._id, role: newUser.role }, JWT_SECRET, { expiresIn: "1d" });
     res.json({ token, user: { id: newUser._id, name, email, role } });
   } catch (err) {
-    res.status(500).json({ msg: "Server error" });
+    console.error("Registration error:", err.message);
+    res.status(500).json({ msg: "Server error", error: err.message });
   }
 });
 
