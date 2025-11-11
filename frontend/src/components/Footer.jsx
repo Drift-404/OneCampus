@@ -2,8 +2,8 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="bg-blue-600 text-white py-4 text-center">
-      <p>© {new Date().getFullYear()} OneCampus. Built with ❤️ using MERN.</p>
+    <footer className="bg-indigo-700 text-white py-4 text-center">
+      <p>© 2025 OneCampus. Built with ❤️ (and lots of pain) .</p>
     </footer>
   );
 }

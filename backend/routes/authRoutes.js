@@ -24,7 +24,7 @@ router.post("/register", async (req, res) => {
     const newUser = new User({ name, email, password: hashedPassword, role });
     await newUser.save();
 
-    const token = jwt.sign({ id: newUser._id, role: newUser.role }, JWT_SECRET, { expiresIn: "1d" });
+    const token = jwt.sign({ id: newUser._id, role: newUser.role.toUpperCase() }, process.env.JWT_SECRET, { expiresIn: "1d" });
     res.json({ token, user: { id: newUser._id, name, email, role } });
   } catch (err) {
     console.error("Registration error:", err.message);
@@ -42,7 +42,7 @@ router.post("/login", async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
 
-    const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: "1d" });
+    const token = jwt.sign({ id: user._id, role: user.role.toUpperCase() }, process.env.JWT_SECRET, { expiresIn: "1d" });
     res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
   } catch (err) {
     res.status(500).json({ msg: "Server error" });

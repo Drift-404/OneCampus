@@ -4,15 +4,26 @@ import mongoose from "mongoose";
 import cors from "cors";
 import http from "http";
 import { Server } from "socket.io";
+import path from "path";
+import { fileURLToPath } from "url";
 
-import authRoutes from "./routes/authRoutes.js";  // ✅ MUST MATCH your filename
+import authRoutes from "./routes/authRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
-import announcementRoutes from "./routes/Announcement.js"; // your new route
+import announcementRoutes from "./routes/announcements.js"; // make sure file name is exactly this
 
 dotenv.config();
 const app = express();
-app.use(cors());
+
+// Allow frontend to connect
+app.use(cors({ origin: "*",})); // adjust origin if needed
+
+// Parse JSON requests
 app.use(express.json());
+
+// Serve uploads folder (so images/PDFs can be accessed by frontend)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Create HTTP server for Socket.IO
 const server = http.createServer(app);
@@ -20,7 +31,7 @@ const io = new Server(server, {
   cors: { origin: "*" }, // adjust in production
 });
 
-// Make io accessible in routes
+// Make io accessible in all routes
 app.use((req, res, next) => {
   req.io = io;
   next();
@@ -39,12 +50,12 @@ mongoose
   })
   .catch((err) => console.error("MongoDB error", err));
 
-// Routes
+// ------------------- Routes -------------------
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
-app.use("/api/announcements", announcementRoutes); // add announcements
+app.use("/api/announcements", announcementRoutes); // announcements route
 
-// Socket.IO connection
+// ---------------- Socket.IO -----------------
 io.on("connection", (socket) => {
   console.log("⚡ New client connected:", socket.id);
 

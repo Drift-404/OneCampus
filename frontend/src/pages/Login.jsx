@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -25,15 +25,15 @@ export default function Login() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-20 p-6 bg-white rounded-xl shadow">
-      <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+    <div className="max-w-md mx-auto mt-20 p-6 bg-white dark:bg-gray-800 rounded-xl shadow transition-colors duration-300">
+      <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-gray-100">Login</h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          className="border p-2 rounded"
+          className="border p-2 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
           required
         />
         <input
@@ -41,13 +41,24 @@ export default function Login() {
           placeholder="Password"
           value={password}
           onChange={e => setPassword(e.target.value)}
-          className="border p-2 rounded"
+          className="border p-2 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
           required
         />
-        <button type="submit" className="bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">
+        <button type="submit" className="bg-indigo-600 dark:bg-indigo-500 text-white dark:text-gray-200 py-2 rounded hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors duration-300">
           Login
         </button>
       </form>
+
+      {/* Register link */}
+      <p className="mt-4 text-center text-gray-700 dark:text-gray-300">
+        Don’t have an account?{" "}
+        <Link
+          to="/register"
+          className="text-indigo-600 dark:text-indigo-400 hover:underline"
+        >
+          Register
+        </Link>
+      </p>
     </div>
   );
 }
